@@ -1,0 +1,3 @@
+# Supabase configuration file
+[api]
+port = 54321
