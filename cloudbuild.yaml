@@ -23,7 +23,7 @@ steps:
         # 1. تهيئة بناء نظيف ومجلد الهجرات
         rm -rf supabase && npx supabase init
         mkdir -p supabase/migrations
-        cp 20240520000000_initial_schema.sql supabase/migrations/
+        cp frontend/supabase_schema.sql supabase/migrations/20240520000000_initial_schema.sql
 
         # 2. تنظيف الرابط من أي فراغات خفية
         CLEAN_DB_URL=$(printf "%s" "$$SUPABASE_DB_URL" | xargs)

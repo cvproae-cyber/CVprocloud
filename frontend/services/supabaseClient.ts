@@ -11,11 +11,11 @@ const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string) ||
 const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || 
                         (window as any)._env_?.SUPABASE_ANON_KEY;
 
-const finalUrl = supabaseUrl || 'https://placeholder-if-missing.supabase.co';
-const finalKey = supabaseAnonKey || 'placeholder-key';
-
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn("Supabase credentials missing. Check Docker build ARGs.");
+  console.error("Supabase Connection Error: URL or Anon Key is missing from environment variables.");
+  throw new Error(
+    "Supabase configuration missing! Please ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are defined in your .env file."
+  );
 }
 
-export const supabase = createClient(finalUrl, finalKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
