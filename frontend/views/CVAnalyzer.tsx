@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, Button, Textarea, Progress } from '../components/ui';
-import { Sparkles, FileText, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Sparkles, FileText, AlertCircle, CheckCircle2, Trash2 } from 'lucide-react';
 import { analyzeCVText } from '../services/geminiService';
 import { CVAnalysisResult } from '../types';
 
@@ -26,6 +26,11 @@ export const CVAnalyzer: React.FC = () => {
     }
   }, [cvText]);
 
+  const handleClear = useCallback(() => {
+    setCvText('');
+    setResult(null);
+  }, [cvText]);
+
   return (
     <div className="p-8 space-y-6 flex-1 overflow-auto flex flex-col lg:flex-row gap-8">
       <div className="flex-1 flex flex-col space-y-4">
@@ -36,10 +41,17 @@ export const CVAnalyzer: React.FC = () => {
         
         <Card className="flex-1 flex flex-col min-h-[500px]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-primary" /> 
-              Paste CV Content
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" /> 
+                Paste CV Content
+              </CardTitle>
+              {cvText && (
+                <Button variant="ghost" size="sm" onClick={handleClear} className="text-muted-foreground hover:text-destructive">
+                  <Trash2 className="h-4 w-4 mr-1" /> Clear
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="flex-1 flex flex-col gap-4">
             <Textarea 

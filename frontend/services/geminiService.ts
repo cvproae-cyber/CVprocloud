@@ -2,9 +2,14 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { CVAnalysisResult } from '../types';
 
 // Initialize the SDK. Assumes process.env.API_KEY is available in the environment.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY, vertexai: true });
+const API_KEY = process.env.API_KEY || '';
+const ai = new GoogleGenAI({ apiKey: API_KEY, vertexai: true });
 
 export async function analyzeCVText(cvText: string): Promise<CVAnalysisResult> {
+  if (!API_KEY) {
+    throw new Error("Gemini API Key is missing. Please check your environment variables.");
+  }
+
   const prompt = `
     You are an expert ATS and HR professional for the UAE/Gulf market.
     Analyze the following CV text and provide a structured evaluation.
@@ -15,7 +20,7 @@ export async function analyzeCVText(cvText: string): Promise<CVAnalysisResult> {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash', // Updated to current stable version
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -78,7 +83,7 @@ export async function generateChatReply(historyText: string, userMessage: string
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       contents: prompt,
       config: {
         systemInstruction: systemInstruction,
